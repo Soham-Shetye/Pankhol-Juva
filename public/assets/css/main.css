@@ -1,0 +1,567 @@
+/* ================================================================
+   MAIN.CSS — Pankhol Juva: Mangrove Conservation & Eco Tourism
+   Sindhudurg District, Maharashtra
+
+   Architecture:
+     main.css       → All custom component and utility styles (this file)
+     navbar.css     → Navbar component only
+     sections.css   → Hero carousel, mission section, hero interactions
+     responsive.css → Media queries exclusively — nothing else
+
+   Audit fixes applied in this file:
+     - Two :root blocks merged into one single declaration
+     - All "sundarban" class names removed or renamed with pankhol prefix
+     - Dead code permanently removed:
+         .footer-hero-wrapper, .footer-hero-content,
+         .sundarban-footer-container, .sundarban-footer,
+         .footer-content-wrapper, .inquiry-newsletter-section,
+         .join-network-banner, .btn-success-sundarban,
+         .footer-label, .footer-nav-links, .initiative-list,
+         .footer-bottom-bar, .text-accent-sundarban
+     - Three circular logo classes consolidated into .pankhol-logo-circle
+     - Duplicate .footer-links a merged into one authoritative definition
+     - .social-btn and .social-btn-sundarban consolidated into .social-link
+     - No @media query blocks in this file
+     - Pankhol Juva project naming used throughout
+
+   !! HTML CHANGES REQUIRED IN index.html WHEN USING THIS FILE !!
+   Two class names have been renamed. Find and replace these:
+
+     OLD class="offcanvas offcanvas-start bg-dark text-white mobile-menu-sundarban"
+     NEW class="offcanvas offcanvas-start bg-dark text-white pankhol-mobile-menu"
+
+     OLD class="pt-5 pb-3 main-sundarban-footer"
+     NEW class="pt-5 pb-3 main-pankhol-footer"
+
+   Both changes are required simultaneously with this CSS file.
+================================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. CSS CUSTOM PROPERTIES — single merged :root block
+   --primary-green and --accent-green names are retained because
+   sections.css and navbar.css (already confirmed working) reference
+   them via var(). Renaming here without updating those files would
+   break the live design. New variables added here use --pankhol- prefix.
+---------------------------------------------------------------- */
+:root {
+    /* ── Brand colours ───────────────────────────────────── */
+    --primary-green: #6de056;
+    /* Section headings */
+    --accent-green: #7bce57;
+    /* Buttons, borders, active states */
+    --pankhol-amber: rgb(250, 176, 57);
+    /* Starburst badge, amber highlights */
+
+    /* ── Background fills ────────────────────────────────── */
+    --light-bg: rgba(118, 186, 27, 0.05);
+    /* Subtle green tint for panels */
+    --pankhol-dark-section: #1a1a1a;
+    /* Testimonials section background */
+    --pankhol-footer-bg: #111512;
+    /* Footer background */
+
+    /* ── Typography colours ──────────────────────────────── */
+    --pankhol-footer-text: #cfd8dc;
+    /* Footer body text */
+    --pankhol-white: #ffffff;
+}
+
+
+/* ----------------------------------------------------------------
+   2. BODY & BASE
+---------------------------------------------------------------- */
+body {
+    font-family: 'Rubik', sans-serif;
+    padding-left: 0;
+    transition: padding-left 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Used on sections that shift when a sidebar/offcanvas opens */
+.main-content {
+    transition: margin-left 0.3s ease;
+}
+
+
+/* ----------------------------------------------------------------
+   3. PANKHOL JUVA MOBILE DRAWER (OFFCANVAS)
+   Renamed from .mobile-menu-sundarban to .pankhol-mobile-menu.
+   Update the class in index.html as documented above.
+---------------------------------------------------------------- */
+.pankhol-mobile-menu {
+    width: 300px !important;
+    background-color: #0c0c0c !important;
+    padding-left: 10px;
+}
+
+/* Applies to all offcanvas elements sitewide */
+.offcanvas,
+.offcanvas-start {
+    border-right: 2px solid var(--accent-green) !important;
+    width: 280px !important;
+    z-index: 1060 !important;
+}
+
+.offcanvas-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1055 !important;
+}
+
+/* ── Circular logo inside the offcanvas header ── */
+.mobile-logo-circle {
+    width: 50px;
+    height: 50px;
+    background: var(--pankhol-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid var(--accent-green);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+}
+
+.mobile-logo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* ── Phone inquiry block at the bottom of the mobile drawer ── */
+.inquiry-icon {
+    font-size: 1.8rem;
+    color: var(--accent-green);
+}
+
+.text-accent-green {
+    color: var(--accent-green);
+    font-size: 1.1rem;
+}
+
+
+/* ----------------------------------------------------------------
+   4. PANKHOL JUVA LOGO CIRCLE — single consolidated definition
+   The original file had three nearly identical classes:
+     .logo-circle, .logo-circle-sundarban, .logo-circular
+   All three are replaced by this one class with size modifiers.
+   Update any HTML references to use .pankhol-logo-circle.
+---------------------------------------------------------------- */
+.pankhol-logo-circle {
+    background: var(--pankhol-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 3px solid var(--accent-green);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+}
+
+.pankhol-logo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* ── Size modifier classes ── */
+.pankhol-logo-circle--sm {
+    width: 50px;
+    height: 50px;
+}
+
+.pankhol-logo-circle--md {
+    width: 80px;
+    height: 80px;
+}
+
+.pankhol-logo-circle--lg {
+    width: 120px;
+    height: 120px;
+}
+
+
+/* ----------------------------------------------------------------
+   5. PANKHOL JUVA SITE FOOTER
+   Renamed from .main-sundarban-footer to .main-pankhol-footer.
+   Update the class on the <footer> element in index.html.
+---------------------------------------------------------------- */
+.main-pankhol-footer {
+    background-color: var(--pankhol-footer-bg);
+    color: var(--pankhol-footer-text);
+    font-size: 0.95rem;
+}
+
+/* Footer logo image sizing */
+.footer-logo {
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* ── All anchors inside the footer ──
+   Ensures every link in the footer inherits the correct base colour
+   and receives the hover transition without needing individual rules.
+---------------------------------------------------------------- */
+.main-pankhol-footer a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.main-pankhol-footer a:hover {
+    color: var(--accent-green) !important;
+}
+
+/* ── Footer quick-links navigation list ──
+   Original file defined .footer-links a twice with conflicting
+   colours: #bbbbbb on the first pass, #cfd8dc on the second pass.
+   The hover colour was also defined twice as two different ways of
+   writing the same value. Merged into one definitive rule here.
+---------------------------------------------------------------- */
+.footer-links a {
+    color: var(--pankhol-footer-text);
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent-green) !important;
+    transform: translateX(4px);
+}
+
+/* ── Footer tour packages list with leading dot icons ── */
+.footer-packages-list li {
+    display: flex;
+    align-items: center;
+    color: var(--pankhol-footer-text);
+}
+
+.footer-packages-list li i {
+    margin-left: -10px;
+    flex-shrink: 0;
+}
+
+
+/* ----------------------------------------------------------------
+   6. SOCIAL LINK CIRCLES — single consolidated definition
+   The original file had four overlapping definitions:
+     .social-btn, .social-btn-sundarban, .social-link (in two places)
+   The HTML uses .social-link exclusively. All others are removed.
+   This single definition is the authoritative one.
+---------------------------------------------------------------- */
+.social-link {
+    width: 35px;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--pankhol-footer-text);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.social-link:hover {
+    background-color: var(--accent-green);
+    border-color: var(--accent-green);
+    color: #000000;
+    transform: translateY(-3px);
+}
+
+
+/* ----------------------------------------------------------------
+   7. COMMUNITY SECTION SOCIAL ICONS
+   Used in the #community section on index.html.
+   Larger icon tiles with rotation hover effect.
+---------------------------------------------------------------- */
+.community-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 1.8rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.community-icon:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-8px) rotate(5deg);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+
+/* ----------------------------------------------------------------
+   8. WHATSAPP FLOATING BUTTON — PANKHOL JUVA CONTACT SHORTCUT
+   Fixed bottom-right on every page. The HTML element was missing
+   from the original index.html and was added in the updated version.
+---------------------------------------------------------------- */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 2000;
+}
+
+/* "Need Help?" speech bubble label to the left of the button */
+.help-text {
+    background: var(--pankhol-white);
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #1a1a1a;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    white-space: nowrap;
+}
+
+/* Speech bubble pointer arrow pointing right toward the button */
+.help-text::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid var(--pankhol-white);
+}
+
+/* Green circular WhatsApp button */
+.whatsapp-icon {
+    background-color: #25D366;
+    color: var(--pankhol-white);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+}
+
+.whatsapp-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.55);
+    color: var(--pankhol-white);
+}
+
+
+/* ----------------------------------------------------------------
+   9. HOVER UTILITY CLASSES
+   Used on footer links, anchor elements, and list items throughout
+   the site wherever a green colour + translate transition is needed.
+---------------------------------------------------------------- */
+
+/* Colour transition only — used on inline anchor elements */
+.hover-green {
+    transition: color 0.3s ease;
+}
+
+.hover-green:hover {
+    color: var(--accent-green) !important;
+}
+
+/* Colour + horizontal translate — used on list items */
+.hover-green-list {
+    color: var(--pankhol-footer-text);
+    transition: color 0.3s ease, transform 0.3s ease;
+    cursor: default;
+}
+
+.hover-green-list:hover {
+    color: var(--accent-green) !important;
+    transform: translateX(5px);
+}
+
+
+/* ----------------------------------------------------------------
+   10. UTILITY CLASSES — PANKHOL JUVA SHARED HELPERS
+---------------------------------------------------------------- */
+
+/* Small copyright and policy link text in the footer */
+.extra-small {
+    font-size: 0.8rem;
+}
+
+/* List items with a leading dot indicator built from a pseudo-element */
+.link-with-dot {
+    display: inline-flex;
+    align-items: center;
+}
+
+.link-with-dot::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: currentColor;
+    border-radius: 50%;
+    margin-right: 8px;
+    opacity: 0.6;
+    flex-shrink: 0;
+}
+
+/* CSS written for the icon of phone which is used in hero secton */
+
+/* Container: Pill shape, dark glassmorphism background, green border */
+/* Container: Pill shape, dark background, green border */
+.pankhol-contact-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(15, 25, 15, 0.55);
+    border: 1.5px solid #6bb933;
+    border-radius: 50px;
+    padding: 8px 24px 8px 16px;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: background-color 0.2s ease;
+
+    /* Removed old gap: 14px; to use absolute pseudo-element positioning for the line instead */
+}
+
+.pankhol-contact-badge:hover {
+    background-color: rgba(15, 25, 15, 0.8);
+}
+
+/* Icon Container */
+.pankhol-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    fill: #ffffff;
+
+    /* Space before the vertical line divider */
+    margin-right: 14px;
+}
+
+/* Text Container */
+.pankhol-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    position: relative;
+    /* Critical for absolute positioning of line relative to this text block */
+
+    /* Space after the vertical line divider */
+    padding-left: 14px;
+}
+
+/* THE VERTICAL DIVIDER LINE */
+.pankhol-text::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    /* Position precisely between the icon and text margins */
+
+    /* Perfect line specs */
+    width: 1.5px;
+    /* Match border thickness from reference image */
+    height: 30px;
+    /* Adjust height based on surrounding elements */
+    background-color: #6bb933;
+    /* Exact Sundarban green border/line color */
+
+    opacity: 0.7;
+    /* Optional: Slight transparency to match the ref image look */
+}
+
+/* "To More Inquiry" Text */
+.pankhol-label {
+    color: #6bb933;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+
+
+}
+
+/* Phone Number Text */
+.pankhol-number {
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   SECTION BADGE — Mask-image brushstroke technique
+   Replicates the exact method used by the reference site.
+
+   HOW IT WORKS:
+   The SVG file (section-title-tag.svg) acts as a MASK — only
+   the filled shape in that SVG is visible. The background-color
+   fills only within that shape, creating the brushstroke look.
+   The text sits on top, unaffected by the mask.
+
+   FILE PLACEMENT:
+   Save section-title-tag.svg to:
+   → public/assets/images/section-title-tag.svg
+
+   HTML USAGE:
+   <span class="section-badge">A New Way to Protect Nature</span>
+   ============================================================ */
+
+.section-badge {
+
+    /* ── Mask: defines the brushstroke shape ── */
+    -webkit-mask-image: url('../images/hero/section-title-tag.svg');
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: cover;
+
+    /* Standard (non-webkit) — Firefox, etc. */
+    mask-image: url('../images/hero/section-title-tag.svg');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: cover;
+
+    /* ── Background: shows only inside the mask shape ── */
+    /*
+        Option A — If you have a CSS variable storing the green
+        as raw RGB values (e.g. --pankhol-primary-rgb: 83, 144, 80):
+        background-color: rgba(var(--pankhol-primary-rgb), 0.28);
+
+        Option B — Direct hex value (simpler, use this if unsure):
+    */
+    background-color: rgb(205, 227, 195);
+
+    /* ── Layout ── */
+    padding: 12px 40px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    /* ── Typography — use your existing loaded script font ── */
+    font-family: 'Satisfy', cursive;
+    /* ← match your loaded font name */
+    font-size: 17px;
+    font-weight: 400;
+    color: rgb(99, 171, 69);
+    /* dark green text */
+    letter-spacing: 0.3px;
+    line-height: 1;
+}

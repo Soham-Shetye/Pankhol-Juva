@@ -1,0 +1,372 @@
+/* ================================================================
+   RESPONSIVE.CSS — Pankhol Juva: Mangrove Conservation & Eco Tourism
+   Sindhudurg District, Maharashtra
+
+   STRICT RULE: This file contains @media query blocks exclusively.
+   Zero base styles. Zero component definitions. Zero class rules
+   outside a @media block. No exceptions.
+
+   Any rule that is not inside a @media block belongs in:
+     main.css      → components, utilities, layout
+     navbar.css    → navbar and mobile drawer
+     sections.css  → hero, mission, section-specific animations
+
+   Audit fixes applied in this file:
+     - All non-media-query rules removed. These were in the original:
+         .mobile-menu-sundarban → moved to main.css as .pankhol-mobile-menu
+         .logo-circle-mobile    → moved to main.css
+         .nav-link-mobile + states → moved to navbar.css
+         .inquiry-icon          → moved to main.css
+         .text-accent-green     → moved to main.css
+         .btn-close-custom      → removed (dead code, never used in HTML)
+         .mobile-menu-footer p  → removed (dead code)
+     - Three separate @media (max-width: 991px) blocks merged into one
+     - Two separate landscape orientation blocks merged into one
+     - Hero carousel !important height overrides removed — sections.css
+       now holds the single correct definition without conflict
+     - .main-sundarban-footer → .main-pankhol-footer
+     - iOS Safari background-attachment: fixed bug fix added
+     - No "Sundarban" or external-brand naming anywhere in this file
+
+   Breakpoint map:
+     max-width: 1199px              Large tablets, small laptops
+     max-width:  991px              Tablets and mobile (Bootstrap lg)
+     max-width:  767px              Mobile portrait (Bootstrap md)
+     max-width:  575px              Small mobile (Bootstrap sm)
+     min-width:  992px              Desktop only
+     max-height: 500px + landscape  Short landscape phone viewports
+     hover:none + pointer:coarse    Touch devices (iOS Safari fix)
+================================================================ */
+
+
+/* ----------------------------------------------------------------
+   BREAKPOINT: max-width 1199px
+   Large tablets and small laptops — navbar container width only.
+---------------------------------------------------------------- */
+@media (max-width: 1199px) {
+
+    .custom-nav {
+        max-width: 96%;
+    }
+
+}
+
+
+/* ----------------------------------------------------------------
+   BREAKPOINT: max-width 991px — Tablets and mobile
+   Merged from three separate blocks that existed in the original.
+   The three blocks handled: offcanvas body scroll lock, desktop nav
+   collapse hiding, and nav link font style overrides. All three are
+   now in this single consolidated block.
+---------------------------------------------------------------- */
+@media (max-width: 991px) {
+
+    /* Prevent body scroll when the Pankhol Juva mobile drawer is open */
+    body.offcanvas-open {
+        overflow: hidden;
+        padding-left: 0 !important;
+    }
+
+    /* Hide desktop collapse nav — mobile uses the offcanvas drawer */
+    .custom-nav .collapse {
+        display: none !important;
+    }
+
+    /* Hero heading: scale down for tablet viewports */
+    .hero-overlay-content .display-2 {
+        font-size: clamp(2rem, 7vw, 3.2rem) !important;
+    }
+
+    /* Activities image: reduce height at tablet breakpoint */
+    #activities .activity-img-container img {
+        height: 380px !important;
+    }
+
+}
+
+
+/* ----------------------------------------------------------------
+   BREAKPOINT: max-width 767px — Mobile portrait
+   Primary mobile layout overrides for the Pankhol Juva public site.
+---------------------------------------------------------------- */
+@media (max-width: 767px) {
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .main-pankhol-footer {
+        text-align: left;
+        padding-top: 50px;
+    }
+
+    /* Spacing and soft visual dividers between stacked footer columns */
+    .main-pankhol-footer [class*="col-"] {
+        margin-bottom: 32px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 20px;
+    }
+
+    /* Remove divider from the last column before the copyright bar */
+    .main-pankhol-footer .row>[class*="col-"]:last-child {
+        border-bottom: none;
+    }
+
+    /* ── Community section ───────────────────────────────────── */
+    .community-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    #community h2 {
+        font-size: 1.75rem;
+    }
+
+    /* ── Hero section ────────────────────────────────────────── */
+
+    /* Hide carousel arrows on mobile — they overlap hero text content
+       on narrow viewports. Restored at min-width: 992px below. */
+    .custom-hero-arrow {
+        display: none !important;
+    }
+
+    /* Reduce starburst badge bottom gap on mobile */
+    .hero-organic-label-container {
+        margin-bottom: 8px;
+    }
+
+    /* Scale hero headline for small screens */
+    .hero-overlay-content .display-2 {
+        font-size: clamp(1.8rem, 8vw, 2.8rem) !important;
+        line-height: 1.1 !important;
+        margin-top: 8px !important;
+    }
+
+    /* Reduce hero subheading size */
+    .hero-overlay-content .lead {
+        font-size: 0.9rem !important;
+        margin-bottom: 1.2rem !important;
+    }
+
+    /* ── Activities section ──────────────────────────────────── */
+    #activities .activity-img-container img {
+        height: 280px !important;
+    }
+
+    /* ── News cards ──────────────────────────────────────────── */
+
+    /* Stack horizontal news cards vertically on mobile */
+    #news .news-card .row.g-0 {
+        flex-direction: column;
+    }
+
+    #news .news-card .col-md-5 {
+        min-height: 200px;
+    }
+
+    /* ── Testimonials ────────────────────────────────────────── */
+    #testimonials .testimonial-card {
+        padding: 1.5rem !important;
+    }
+
+    /* ── WhatsApp floating button ────────────────────────────── */
+    .whatsapp-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 1.5rem;
+    }
+
+}
+
+
+/* ----------------------------------------------------------------
+   BREAKPOINT: max-width 575px — Small mobile
+   Fine-tuning for the smallest viewport class on the Pankhol Juva site.
+---------------------------------------------------------------- */
+@media (max-width: 575px) {
+
+    /* Stack hero CTA buttons vertically on very small screens */
+    .hero-overlay-content .d-flex.gap-3 {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-overlay-content .d-flex.gap-3 .btn {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    /* Hide "Need Help?" speech bubble on very small screens to
+       prevent it overlapping content directly above the button */
+    .help-text {
+        display: none;
+    }
+
+    /* Mission feature mini-cards: tighter padding at smallest size */
+    .mission-feature {
+        padding: 0.65rem !important;
+    }
+
+}
+
+
+/* ----------------------------------------------------------------
+   BREAKPOINT: min-width 992px — Desktop only
+   Restores elements hidden or reduced for smaller viewports.
+---------------------------------------------------------------- */
+@media (min-width: 992px) {
+
+    /* Restore hero carousel navigation arrows on desktop */
+    .custom-hero-arrow {
+        display: flex !important;
+    }
+
+}
+
+
+/* ----------------------------------------------------------------
+   BREAKPOINT: max-height 500px AND landscape orientation
+   Merged from two separate blocks in the original file.
+   Targets phones held in landscape where the viewport height is
+   very short — commonly triggered on devices like iPhone SE
+   and Android phones in landscape mode.
+---------------------------------------------------------------- */
+@media (max-height: 500px) and (orientation: landscape) {
+
+    /* Hero: keep full viewport height in short landscape viewports.
+       The !important overrides on height that were in the original
+       responsive.css have been removed now that sections.css holds
+       a single correct definition. Only min-height is adjusted here. */
+    #hero-carousel,
+    .hero-slide,
+    .carousel-inner,
+    .carousel-item {
+        min-height: 350px !important;
+    }
+
+    /* Navbar: reduce top offset so it does not eat into hero space */
+    .custom-nav {
+        top: 8px !important;
+        padding: 5px 20px !important;
+    }
+
+    /* Hero headline: compact size for short landscape viewports */
+    .hero-overlay-content .display-2 {
+        font-size: 1.8rem !important;
+        margin-top: 45px !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    /* Hero lead paragraph: clamp to 2 lines in landscape */
+    .hero-overlay-content .lead {
+        font-size: 0.85rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.8rem !important;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* CTA buttons: compact sizing in short landscape viewports */
+    .btn-lg {
+        padding: 8px 20px !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* Community section: reduce padding in landscape */
+    #community.py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    #community .gap-4 {
+        gap: 1.5rem !important;
+    }
+
+}
+
+
+/* ----------------------------------------------------------------
+   iOS SAFARI — background-attachment: fixed compatibility fix
+
+   PROBLEM:
+   iOS Safari does not support background-attachment: fixed on any
+   element other than the document root. When a section uses this
+   value, Safari renders the background as a completely blank white
+   or transparent area. The #community section on index.html is
+   affected — all iPhone and iPad visitors see a broken section.
+
+   WHY !important IS JUSTIFIED HERE:
+   The background-attachment: fixed value sits inside an inline style
+   attribute on the #community element in index.html. Inline styles
+   carry the highest CSS specificity in the cascade, which means no
+   external stylesheet rule can override them without !important.
+   This is not a specificity war — it is the only technically correct
+   way to override an inline value from a stylesheet rule.
+
+   @media (hover: none) and (pointer: coarse) reliably targets touch-
+   primary devices, which covers all iOS iPhones and iPads, Android
+   phones, and tablets — exactly the device class affected by this
+   Safari limitation.
+
+   FUTURE FIX:
+   Move the #community background properties out of the inline style
+   in index.html and into a CSS class. Once that is done, this
+   !important can be removed and the override can use normal specificity.
+---------------------------------------------------------------- */
+@media (hover: none) and (pointer: coarse) {
+
+    #community {
+        background-attachment: scroll !important;
+    }
+
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .btn-whatsapp {
+        display: none !important;
+    }
+}
+
+/* =========================================================
+   Mobile Landscape & Short Screen Fix
+   Triggers only when the screen height is 450px or less.
+
+   This code is used to auto adjust the starburst design to 
+   prevent from overlapping to navbar when it open in mobile view.
+========================================================= */
+@media screen and (max-height: 450px) and (orientation: landscape) {
+
+    /* Push the entire content block down so it clears the navbar */
+    .hero-overlay-content {
+        padding-top: 100px !important;
+        align-items: flex-start !important;
+        /* Stops perfectly centering so it doesn't push up */
+    }
+
+    /* Compress the space below the Starburst badge */
+    .hero-organic-label-container {
+        margin-bottom: 0.75rem !important;
+    }
+
+    /* Shrink the main headline slightly and reduce its bottom margin */
+    .hero-overlay-content h1 {
+        font-size: clamp(1.8rem, 4vw, 2.5rem) !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    /* Compress the space above the phone button */
+    .pankhol-contact-badge {
+        margin-top: 0 !important;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 576px) {
+    .section-badge {
+        font-size: 0.9rem;
+        padding: 10px 32px;
+    }
+}

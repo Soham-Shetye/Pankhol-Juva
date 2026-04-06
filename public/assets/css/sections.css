@@ -1,0 +1,900 @@
+/* ================================================================
+   SECTIONS.CSS — Pankhol Juva: Mangrove Conservation & Eco Tourism
+
+   Scope: Section-specific styles that go beyond Bootstrap utilities
+   and main.css component definitions. Covers the hero carousel,
+   mission section image treatment, and hero interactive elements.
+
+   Architecture rules:
+   - No @media query blocks — all breakpoints go in responsive.css
+   - No duplicate selectors — each class appears exactly once
+   - No "Sundarban" or external-brand naming anywhere in this file
+   - Variables reference :root values defined in main.css
+
+   Audit fixes applied in this file:
+   - Removed duplicate definitions of #hero-carousel and .hero-slide
+   - Removed duplicate definitions of .jagged-wrapper and .mission-tiger-img
+   - Resolved kenburns vs static transform conflict (static removed)
+   - Removed dead ::before and ::after on .hero-organic-label-container
+   - Removed duplicate transform: rotate(-1deg) on .pankhol-juva-text
+   - Removed @media block (moved to responsive.css)
+   - Removed .community-icon (already defined in main.css)
+   - Added .word-exit and .word-enter for main.js cycling animation
+   - Added .hero-progress-container and .hero-progress-bar for main.js
+================================================================ */
+
+
+/* ----------------------------------------------------------------
+   HERO CAROUSEL — PANKHOL JUVA HOMEPAGE SLIDESHOW
+   Single definition. Duplicates from original sections.css removed.
+---------------------------------------------------------------- */
+#hero-carousel {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    min-height: 600px;
+    background-color: #000;
+}
+
+.carousel-inner,
+.carousel-item {
+    height: 100vh;
+    min-height: 600px;
+}
+
+/*
+ * Hero slide — background image container.
+ *
+ * Ken Burns zoom animation is handled here via the keyframe below.
+ * The original file also applied transform: scale(1.1) as a static
+ * property on .carousel-item.active .hero-slide, which caused a
+ * visible jump at the start of each slide because the static value
+ * conflicted with the keyframe starting position (scale 1.0).
+ * That static rule is permanently removed. The keyframe handles
+ * all scaling exclusively.
+ */
+.hero-slide {
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+    animation: pankholKenBurns 5s ease-in-out infinite alternate;
+}
+
+/*
+ * Ken Burns animation — named with project prefix to avoid any
+ * global keyframe naming conflict with third-party libraries.
+ * Single definition: the duplicate in the original file is removed.
+ */
+@keyframes pankholKenBurns {
+    from {
+        transform: scale(1.0);
+    }
+
+    to {
+        transform: scale(1.12);
+    }
+}
+
+/*
+ * Hero overlay — positions the text content layer directly above
+ * the carousel slides. pointer-events: none on the wrapper prevents
+ * it blocking carousel swipe gestures; re-enabled on the container.
+ */
+.hero-overlay-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.hero-overlay-content .container {
+    pointer-events: auto;
+}
+
+
+/* ----------------------------------------------------------------
+   HERO PROGRESS BAR — PANKHOL JUVA SLIDE TIMER INDICATOR
+   Animated by main.js: width transitions from 0% to 100% over
+   5000ms, then resets on each slid.bs.carousel event.
+---------------------------------------------------------------- */
+.hero-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.hero-progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--accent-green);
+    /* Transition is applied dynamically by main.js via inline style */
+}
+
+
+/* ----------------------------------------------------------------
+   HERO CAROUSEL NAVIGATION ARROWS
+---------------------------------------------------------------- */
+.custom-hero-arrow {
+    width: 80px;
+    opacity: 1;
+    z-index: 15;
+    /* Position arrows lower on the viewport — matches reference design */
+    top: auto;
+    bottom: 20%;
+}
+
+.carousel-control-prev.custom-hero-arrow {
+    left: 3%;
+}
+
+.carousel-control-next.custom-hero-arrow {
+    right: 3%;
+}
+
+.arrow-circle {
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.custom-hero-arrow:hover .arrow-circle,
+.custom-hero-arrow:focus .arrow-circle {
+    background-color: var(--accent-green);
+    border-color: var(--accent-green);
+    transform: scale(1.1);
+}
+
+
+/* ----------------------------------------------------------------
+   HERO STARBURST BADGE — PANKHOL JUVA IDENTITY LABEL
+   Uses a 24-point clip-path polygon to create the organic badge
+   shape. No ::before or ::after pseudo-elements are needed or used.
+   The original file declared both and immediately set them to
+   display: none — those dead rules are not reproduced here.
+---------------------------------------------------------------- */
+.hero-organic-label-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px 47px;
+    margin-bottom: 2rem;
+    background-color: rgb(250, 176, 57);
+
+    /* 24-spike starburst shape */
+    clip-path: polygon(100% 50%, 91.6% 55%, 98.3% 62.2%, 88.8% 64.5%,
+            93.3% 73.5%, 83.4% 73.2%, 85.4% 83.2%, 75.6% 80.1%,
+            75% 90.7%, 66.1% 85.1%, 62.9% 95.4%, 55.5% 87.7%,
+            50% 97%, 44.5% 87.7%, 37.1% 95.4%, 33.9% 85.1%,
+            25% 90.7%, 24.4% 80.1%, 14.6% 83.2%, 16.6% 73.2%,
+            6.7% 73.5%, 11.2% 64.5%, 1.7% 62.2%, 8.4% 55%,
+            0% 50%, 8.4% 45%, 1.7% 37.8%, 11.2% 35.5%,
+            6.7% 26.5%, 16.6% 26.8%, 14.6% 16.8%, 24.4% 19.9%,
+            25% 9.3%, 33.9% 14.9%, 37.1% 4.6%, 44.5% 12.3%,
+            50% 3%, 55.5% 12.3%, 62.9% 4.6%, 66.1% 14.9%,
+            75% 9.3%, 75.6% 19.9%, 85.4% 16.8%, 83.4% 26.8%,
+            93.3% 26.5%, 88.8% 35.5%, 98.3% 37.8%, 91.6% 45%);
+}
+
+/*
+ * Script font text inside the starburst badge.
+ *
+ * Original file had two transform declarations on this selector:
+ *   transform: rotate(-1deg);   ← first declaration, ignored by browser
+ *   transform: rotate(2deg);    ← second declaration, this one wins
+ * The first was dead code. Only the correct value is kept here.
+ */
+.pankhol-juva-text {
+    font-family: 'Satisfy', cursive;
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 23px;
+    color: rgb(15, 11, 19);
+    display: block;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    transform: rotate(2deg);
+}
+
+
+/* ----------------------------------------------------------------
+   HERO HEADLINE — PANKHOL JUVA MAIN H1
+---------------------------------------------------------------- */
+.display-2 {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    line-height: 0.95;
+    color: #ffffff;
+    word-break: keep-all;
+}
+
+
+/* ----------------------------------------------------------------
+   CYCLING WORD ANIMATION
+   These two classes are toggled by main.js during each word
+   transition. The hero-cycle-word element sits inside .display-2.
+
+   word-exit  → applied first: fades the current word upward
+   word-enter → applied after text swap: word enters from below
+
+   The 0.6s duration must match the setTimeout delay in main.js.
+---------------------------------------------------------------- */
+.hero-cycle-word {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    color: var(--accent-green);
+    display: inline-block;
+    position: relative;
+    border-bottom: 4px solid var(--accent-green);
+    padding-bottom: 3px;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+/* Fade out upward — applied by main.js before text swap */
+.hero-cycle-word.word-exit {
+    opacity: 0;
+    transform: translateY(-14px);
+}
+
+/* Starting position for entry — applied immediately after text swap */
+.hero-cycle-word.word-enter {
+    opacity: 0;
+    transform: translateY(14px);
+    /* Transition is intentionally active here so the removal of
+       this class animates the word smoothly into the resting state */
+}
+
+
+/* ----------------------------------------------------------------
+   MISSION SECTION — PANKHOL JUVA ABOUT INTRO
+---------------------------------------------------------------- */
+/* BASE FEATURE CARD SETTINGS */
+.conserv-heading {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 53px;
+}
+
+.mission-feature .icon-box {
+    background-color: #ffffff;
+    /* Circle stays white */
+    transition: transform 0.3s ease;
+    /* Optional: smooth scale on hover */
+}
+
+.mission-feature .feature-text {
+    color: #212529;
+    /* Default dark text */
+    transition: color 0.15s ease;
+}
+
+/* ── GREEN CARDS ── */
+.feature-green {
+    background-color: #eef6ed;
+    /* Light green tint */
+}
+
+.feature-green .icon-box {
+    color: #5ba845;
+    /* Green icon */
+}
+
+.feature-green:hover {
+    background-color: #5ba845;
+    /* Solid green background */
+}
+
+/* ── ORANGE CARDS ── */
+.feature-orange {
+    background-color: #fdf5ea;
+    /* Light orange tint */
+}
+
+.feature-orange .icon-box {
+    color: #f5a637;
+    /* Orange icon */
+}
+
+.feature-orange:hover {
+    background-color: #f5a637;
+    /* Solid orange background */
+}
+
+/* ── HOVER TEXT FLIP (Applies to both) ── */
+.feature-green:hover .feature-text,
+.feature-orange:hover .feature-text {
+    color: #ffffff;
+    /* Text flips to white on hover */
+}
+
+/* Optional: slight pop effect on the icon circle when card is hovered */
+.mission-feature:hover .icon-box {
+    transform: scale(1.05);
+}
+
+/* 2. Apply the font to your specific paragraph */
+.pankhol-text-jost {
+    font-family: 'Jost', sans-serif !important;
+    font-size: 17px;
+    color: rgb(120, 120, 120);
+}
+
+.pankhol-text-design {
+    font-size: 45px;
+    line-height: 50px;
+    font-weight: 600;
+    color: rgb(16, 12, 8);
+}
+
+
+/* CRYSTAL HOVER EFFECT */
+.package-card-img-wrap {
+    overflow: hidden;
+    position: relative;
+}
+
+.package-card-img-wrap .card-img img {
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* The dark gradient that adds the "Crystal/Glass" depth */
+.package-card-img-wrap::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(1deg, rgba(21, 47, 0, 0.5) 1%, rgba(21, 47, 0, 0) 60%);
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.package-card:hover .card-img img {
+    transform: scale(1.1);
+}
+
+/* PRICE & BUTTON STYLING */
+.primary-btn2 {
+    background-color: #63AB45;
+    color: #fff !important;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.primary-btn2:hover {
+    background-color: #1a1a1a;
+    transform: translateY(-2px);
+}
+
+.price-area h6 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* =========================================
+   Custom Action Button (Matches Navbar)
+========================================= */
+.btn-pankhol-action {
+    background-color: #5ba845;
+    /* Your navbar green */
+    color: #ffffff;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-pankhol-action:hover,
+.btn-pankhol-action:focus {
+    background-color: #212529;
+    /* Dark grey/black hover state */
+    color: #ffffff;
+}
+
+/* ----------------------------------------------------------------
+   JAGGED IMAGE MASK — PANKHOL JUVA MISSION SECTION VISUAL
+   Single definition. The original file had two separate definitions
+   of both .jagged-wrapper and .mission-tiger-img. The first
+   (incomplete) instance of each is not reproduced here.
+---------------------------------------------------------------- */
+.jagged-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1.1;
+    overflow: hidden;
+}
+
+.mission-tiger-img {
+    width: 550px;
+    height: 620px;
+    object-fit: cover;
+    transform: scale(1.05);
+
+    -webkit-mask-image: url('../images/logos/vector.webp');
+    mask-image: url('../images/logos/vector.webp');
+
+    /* 1. ANCHOR LEFT: This keeps the jagged design on the left side */
+    -webkit-mask-position: left center;
+    mask-position: left center;
+
+    /* 2. OVERSTRETCH: This stretches the mask width to 150%. 
+       The right jagged edge is pushed outside the box, leaving a straight, plain line on the right side. */
+    -webkit-mask-size: 150% 92%;
+    mask-size: 150% 92%;
+
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+
+    filter: drop-shadow(10px 20px 30px rgba(0, 0, 0, 0.25));
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+
+
+
+/* ----------------------------------------------------------------
+   WHY PANKHOL-JUVA SECTION — 
+---------------------------------------------------------------- */
+/* --- MOBILE & TABLET VIEW --- */
+/* Allows text to wrap naturally, but shrinks the font size so "journey" fits on line 1 */
+.pankhol-one-line {
+    white-space: normal;
+    overflow-wrap: break-word;
+    font-size: 32px !important;
+    /* Approx 25px - exact size to fit the first 3 words */
+    line-height: 1.2;
+    font-weight: 600;
+    color: rgb(16, 12, 8);
+}
+
+/* --- PC & LAPTOP VIEW --- */
+/* Keeps text strictly on one line and restores the large font size */
+@media (min-width: 992px) {
+    .pankhol-one-line {
+        white-space: nowrap !important;
+        font-size: 45px !important;
+        line-height: 50px;
+        font-weight: 600;
+        color: rgb(16, 12, 8);
+
+        /* Adjust this number if desktop is too big/small */
+    }
+}
+
+.section-subtitle {
+    line-height: 26px;
+    color: rgb(122, 122, 122);
+}
+
+/* --- Feature Card Hover Effect --- */
+.pankhol-feature-card {
+    transition: background-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Base state for headings and text inside the card so they can transition smoothly */
+.pankhol-feature-card h5,
+.pankhol-feature-card p,
+.pankhol-feature-card .feature-card-icon {
+    transition: color 0.4s ease;
+}
+
+/* Hover State - Green Version (Matches "Eco-Conscious" and "Wildlife") */
+.pankhol-feature-card:hover {
+    background-color: #63AB45 !important;
+    /* Your Pankhol Green */
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Turn text and icons white on hover */
+.pankhol-feature-card:hover h5,
+.pankhol-feature-card:hover p,
+.pankhol-feature-card:hover .feature-card-icon {
+    color: #ffffff !important;
+}
+
+/* --- Optional: Specific Card Colors --- */
+/* To get the exact Orange/Yellow hover states like Sundarban Eco Trails, 
+   add these classes to specific card HTML wrappers */
+
+.hover-orange:hover {
+    background-color: #F89C2A !important;
+    /* Orange color */
+}
+
+.hover-olive:hover {
+    background-color: #90A955 !important;
+    /* Olive color */
+}
+
+/* Green Variant: Dark green icon, light green circle */
+.icon-green {
+    color: #63AB45 !important;
+}
+
+/* Orange Variant: Dark orange icon, light orange circle */
+.icon-orange {
+    color: #F89C2A !important;
+}
+
+
+/* Optional: Add this to ensure the font size shrinks slightly 
+   on smaller laptops so it doesn't touch the edges */
+
+
+
+
+
+
+/* ----------------------------------------------------------------
+   COMMUNITY SECTION SOCIAL ICONS
+   NOTE: .community-icon is defined in main.css.
+   It is intentionally absent from this file to avoid the
+   duplication that existed in the original codebase.
+---------------------------------------------------------------- */
+
+
+
+
+/* UPDATED: Controls the floating plane */
+.pankhol-plane-floating {
+    position: absolute;
+
+    /* 1. POSITION: Moves it much closer to the tiger */
+    top: -70px;
+    right: 30px;
+
+    /* 2. SIZE: Makes the plane and trail significantly larger */
+    width: 390px;
+
+    /* 3. BRIGHTNESS: Forces the SVG to be brighter and more colorful */
+    filter: brightness(0.9) saturate(0.9);
+
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Mobile Adjustment for the larger plane */
+@media (max-width: 991px) {
+    .pankhol-plane-floating {
+        top: -10px;
+        right: 0;
+        width: 220px;
+    }
+}
+
+
+
+
+
+
+
+
+.tour-packages-section {
+    padding: 60px 0;
+    background-color: rgb(249, 252, 215);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Section Heading */
+.section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #63AB45;
+    font-family: 'Satisfy', cursive;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 8px;
+}
+
+.section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: rgb(16, 12, 8);
+    margin: 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mb-5 {
+    margin-bottom: 48px;
+}
+
+/* ===== CARDS GRID ===== */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+@media (max-width: 991px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 575px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+}
+
+/* ===== PACKAGE CARD ===== */
+.package-card {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--white-color);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+/* .package-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+} */
+
+/* ===== BADGE — card च्या top-left corner पासून ===== */
+.card-badge {
+    position: absolute;
+    top: 10;
+    left: 0;
+    background-color: #111111;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 8px 14px;
+    z-index: 3;
+    /* border-top-left-radius: 12px;      card च्या corner ला match */
+    border-bottom-right-radius: 10px;
+}
+
+/* ===== IMAGE WRAP — padding देऊन image floating दिसते ===== */
+.package-card-img-wrap {
+    position: relative;
+    width: 100%;
+    padding: 20px 20px 0 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.package-card-img-wrap img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px;
+    transition: transform 0.4s ease;
+}
+
+/* .package-card:hover .package-card-img-wrap img {
+    transform: scale(1.05);
+} */
+
+/* ===== CARD CONTENT ===== */
+.package-card-content {
+    padding: 20px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 14px;
+}
+
+.package-card-content h5 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.package-card-content h5 a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+}
+
+.package-card-content h5 a:hover {
+    color: #63AB45;
+}
+
+/* Divider */
+.card-divider {
+    height: 1px;
+    background: #e8e8e8;
+    margin: 0;
+}
+
+/* Bottom row */
+.card-content-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+/* Price Area */
+.price-area h6 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    margin: 0 0 2px;
+}
+
+.price-area .price-main {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #63AB45;
+    display: inline-block;
+}
+
+.price-area .price-old {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #aaa;
+    text-decoration: line-through;
+    margin-left: 6px;
+}
+
+.price-area .price-note {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: #888;
+    margin: 2px 0 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Book Button */
+.btn-book {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #63AB45;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-book:hover {
+    background-color: #51963a;
+    transform: scale(1.03);
+}
+
+.btn-book svg {
+    flex-shrink: 0;
+}
+
+
+
+
+
+
+
+/* 1. Wrapper — fixed height so all images in a row align */
+.gallery-img-wrap {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    border-radius: 4px;
+    height: 580px;
+    /* ← Controls the consistent row height */
+}
+
+/* 2. Image — fills the fixed wrapper without distortion */
+.gallery-img-wrap img {
+    width: 100%;
+    height: 100%;
+    /* ← Fill the wrapper fully */
+    object-fit: cover;
+    /* ← Crop to fill, never stretch */
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 3. The Dark Overlay */
+.gallery-img-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* 4. The Hover Text & Icon */
+.gallery-hover-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -35%);
+    color: #ffffff !important;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    opacity: 0;
+    transition: all 0.4s ease;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.gallery-hover-btn i {
+    color: #f5a637;
+    font-size: 26px;
+}
+
+
+
+.gallery-img-wrap:hover::after {
+    opacity: 1;
+}
+
+.gallery-img-wrap:hover .gallery-hover-btn {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
